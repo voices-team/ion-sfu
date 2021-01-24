@@ -40,9 +40,9 @@ portrange = [5000, 5200]
 sdpsemantics = "unified-plan"
 
 # mdns
-# false save many FD and Goroutines
 # true when using sfu in LAN
-mdns = false
+# false save many FD and Goroutines
+mdns = true
 
 [webrtc.candidates]
 # In case you're deploying ion-sfu on a server which is configured with
