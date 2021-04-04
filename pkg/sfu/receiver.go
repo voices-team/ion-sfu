@@ -335,13 +335,13 @@ func (w *WebRTCReceiver) writeRTP(layer int) {
 
 		w.locks[layer].Lock()
 		for idx, dt := range w.downTracks[layer] {
-			if err := dt.WriteRTP(pkt); err == io.EOF {
+			if err := dt.WriteRTP(pkt); err == io.EOF || err == io.ErrClosedPipe {
 				del = append(del, idx)
 			}
 		}
 		if len(del) > 0 {
-			for _, idx := range del {
-				w.downTracks[layer][idx] = w.downTracks[layer][len(w.downTracks[layer])-1]
+			for i := len(del) - 1; i >= 0; i-- {
+				w.downTracks[layer][del[i]] = w.downTracks[layer][len(w.downTracks[layer])-1]
 				w.downTracks[layer][len(w.downTracks[layer])-1] = nil
 				w.downTracks[layer] = w.downTracks[layer][:len(w.downTracks[layer])-1]
 			}
